@@ -40,19 +40,26 @@
     // "message" is event we are listening for from socket server
     // "data" will be the content of that message
     socketio.on("message", (data) => {
-        // calling our createMessage function made on line 23
+        // calling our createMessage function
         createMessage(data.name, data.message)
     });
 
     //function used by our button to send a message
     const sendMessage = () => {
-        //grabbing the "message" ID assigned to the input message box (line 12)
+        //grabbing the "message" ID assigned to the input message box
         const message= document.getElementById("message")
         if (message.value == "") return;
         // "new_text" is an event name. can have many event names
         socketio.emit("new_text", {data: message.value});
         message.value = ""; 
     };
+    
+    //pressing enter will automatically send user message 
+    window.addEventListener('keydown', function (e) {
+        if (e.key == "Enter") {
+            document.getElementById("send-btn").click();
+        }
+    }, false);
 </script>
 <!-- saves all messages in room if page refreshed-->
 {% for msg in messages %}
